@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.assignment.user.exception.StatusCode;
 import com.assignment.user.exception.UserException;
 import com.assignment.user.intf.UserOperationInterface;
-import com.assignment.user.model.User;
+import com.assignment.user.model.UserEntity;
 import com.assignment.user.repository.UserRepository;
 
 @Service
@@ -21,39 +22,45 @@ public class UserService implements UserOperationInterface {
 	UserRepository userRepository;
 
 	@Override
-	public List<User> createUsers(List<User> users) throws UserException {
+	public List<UserEntity> createUsers(List<UserEntity> users) throws UserException {
 		try {
 			checkUsersDOB(users.stream().map(user -> user.getDob()).collect(Collectors.toList()));
 			checkMobileNumbersValidation(users);
-			for (User user : users) {
-				userRepository.saveAndFlush(user);
+			for (UserEntity user : users) {
+				userRepository.save(user);
 			}
 			return users;
 		} catch (UserException ex) {
 			throw new UserException(ex.getMessage(), ex.getStatusCode());
+		} catch (DataIntegrityViolationException ex) {
+			throw new UserException("Mobile number should be unique for a user", ex.getCause(),
+					StatusCode.INVALID_INPUT_EXCEPTION);
 		} catch (Exception ex) {
 			throw new UserException(ex.getMessage(), ex.getCause(), StatusCode.GENERIC_EXCEPTION);
 		}
 	}
 
 	@Override
-	public List<User> getUsers() throws UserException {
+	public List<UserEntity> getUsers() throws UserException {
 		return userRepository.findAll();
 	}
 
 	@Override
-	public List<User> updateUsers(List<User> users) throws UserException {
+	public List<UserEntity> updateUsers(List<UserEntity> users) throws UserException {
 		try {
 			checkUsersAreValid(users.stream().map(user -> user.getUserId()).collect(Collectors.toList()));
 			checkMobileNumbersValidation(users);
 			users = autoFillingValues(users);
 			checkUsersDOB(users.stream().map(user -> user.getDob()).collect(Collectors.toList()));
-			for (User user : users) {
-				userRepository.saveAndFlush(user);
+			for (UserEntity user : users) {
+				userRepository.save(user);
 			}
 			return users;
 		} catch (UserException ex) {
 			throw new UserException(ex.getMessage(), ex.getStatusCode());
+		} catch (DataIntegrityViolationException ex) {
+			throw new UserException("Mobile number should be unique for a user", ex.getCause(),
+					StatusCode.INVALID_INPUT_EXCEPTION);
 		} catch (Exception ex) {
 			throw new UserException(ex.getMessage(), ex.getCause(), StatusCode.GENERIC_EXCEPTION);
 		}
@@ -75,11 +82,12 @@ public class UserService implements UserOperationInterface {
 		}
 	}
 
-	private void checkMobileNumbersValidation(List<User> users) throws UserException {
+	private void checkMobileNumbersValidation(List<UserEntity> users) throws UserException {
 		long countOfInvalidNumber = users.stream().filter(user -> user.getMobileNumber().length() < 10).count();
 		if (countOfInvalidNumber > 0) {
 			throw new UserException("Invalid number in this list", StatusCode.BAD_REQUEST);
 		}
+
 	}
 
 	private void checkUsersAreValid(List<Long> userIds) throws UserException {
@@ -102,9 +110,9 @@ public class UserService implements UserOperationInterface {
 
 	}
 
-	private List<User> autoFillingValues(List<User> users) {
-		for (User user : users) {
-			User userDetail = userRepository.getById(user.getUserId());
+	private List<UserEntity> autoFillingValues(List<UserEntity> users) {
+		for (UserEntity user : users) {
+			UserEntity userDetail = userRepository.findById(user.getUserId()).get();
 			if (user.getfName() == null) {
 				user.setfName(userDetail.getfName());
 			}

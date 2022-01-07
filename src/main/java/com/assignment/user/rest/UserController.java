@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.assignment.user.exception.StatusCode;
 import com.assignment.user.exception.UserException;
 import com.assignment.user.intf.UserOperationInterface;
-import com.assignment.user.model.User;
+import com.assignment.user.model.UserEntity;
 
 @RestController
 public class UserController {
@@ -26,8 +26,8 @@ public class UserController {
 	UserOperationInterface userOperationInterface;
 
 	@PostMapping("/createUsers")
-	public Object createUser(@RequestBody List<User> users) throws UserException {
-		List<User> response = userOperationInterface.createUsers(users);
+	public Object createUser(@RequestBody List<UserEntity> users) throws UserException {
+		List<UserEntity> response = userOperationInterface.createUsers(users);
 		ResponseDetail responseDetail = new ResponseDetail(StatusCode.SUCCESS.getCode(), StatusCode.SUCCESS, response,
 				Instant.now());
 		return ResponseEntity.status(responseDetail.getStatus()).body(responseDetail);
@@ -36,15 +36,15 @@ public class UserController {
 
 	@GetMapping("/getUsers")
 	public Object getUsers() throws UserException {
-		List<User> response = userOperationInterface.getUsers();
+		List<UserEntity> response = userOperationInterface.getUsers();
 		ResponseDetail responseDetail = new ResponseDetail(StatusCode.SUCCESS.getCode(), StatusCode.SUCCESS, response,
 				Instant.now());
 		return ResponseEntity.status(responseDetail.getStatus()).body(responseDetail);
 	}
 
 	@PatchMapping("/updateUsers")
-	public Object updateUsers(@RequestBody List<User> users) throws UserException {
-		List<User> response = userOperationInterface.updateUsers(users);
+	public Object updateUsers(@RequestBody List<UserEntity> users) throws UserException {
+		List<UserEntity> response = userOperationInterface.updateUsers(users);
 		ResponseDetail responseDetail = new ResponseDetail(StatusCode.SUCCESS.getCode(), StatusCode.SUCCESS, response,
 				Instant.now());
 		return ResponseEntity.status(responseDetail.getStatus()).body(responseDetail);

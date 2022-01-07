@@ -2,23 +2,35 @@ package com.assignment.user.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * This is an Entity Class
+ *
+ */
 @Entity
-public class User {
+@Table(name = "USERDETAIL")
+public class UserEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "USERID")
 	private long userId;
+	@Column(name = "FIRSTNAME")
 	private String fName;
+	@Column(name = "LASTNAME")
 	private String lName;
+	@Column(name = "DATEOFBIRTH")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dob;
+	@Column(name = "MOBILENUMBER", unique = true)
 	private String mobileNumber;
 
 	public long getUserId() {
