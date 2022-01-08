@@ -4,6 +4,10 @@ import java.time.Instant;
 
 import com.assignment.user.exception.StatusCode;
 
+/**
+ * This class is a POJO class for response body.
+ *
+ */
 public class ResponseDetail {
 
 	private final int status;

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * This is an Entity Class
+ * This is an Entity/Model class with database table mapping.
  *
  */
 @Entity
@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class UserEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "USERID")
 	private long userId;
 	@Column(name = "FIRSTNAME")

@@ -5,6 +5,10 @@ import java.util.List;
 import com.assignment.user.exception.UserException;
 import com.assignment.user.model.UserEntity;
 
+/**
+ * This is an interface which contains all the user operations.
+ *
+ */
 public interface UserOperationInterface {
 
 	public List<UserEntity> createUsers(List<UserEntity> users) throws UserException;

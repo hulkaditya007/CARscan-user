@@ -2,13 +2,17 @@ package com.assignment.user.exception;
 
 import java.time.Instant;
 
+/**
+ * This is a helper class used in UserExceptionHandler.java.
+ *
+ */
 public class ErrorDetails {
 
-	 private final int status;
-	 private StatusCode error;
-	 private final String message;
-	 private final Instant timestamp;
-	 
+	private final int status;
+	private StatusCode error;
+	private final String message;
+	private final Instant timestamp;
+
 	public ErrorDetails(int status, StatusCode error, String message, Instant timestamp) {
 		super();
 		this.status = status;
@@ -36,8 +40,5 @@ public class ErrorDetails {
 	public Instant getTimestamp() {
 		return timestamp;
 	}
-	
-	
-	 
-	 
+
 }

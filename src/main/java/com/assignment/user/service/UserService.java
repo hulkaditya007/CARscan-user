@@ -15,8 +15,19 @@ import com.assignment.user.intf.UserOperationInterface;
 import com.assignment.user.model.UserEntity;
 import com.assignment.user.repository.UserRepository;
 
+/**
+ * This UserService class contains implementation of method declared in
+ * UserOperationInterface for database related operations.
+ *
+ */
 @Service
 public class UserService implements UserOperationInterface {
+
+	private static final String MOBILE_ERROR_MESSAGE = "Mobile number should be unique for a user";
+	private static final String INVALID_USER_ID = "Invalid number in the input list";
+	private static final String INVALID_MOBILE_NUMBER = "Invalid mobile number in the input list";
+	private static final String INVALID_DOB = "Date is Invalid! And I dont beleive in time travelling.";
+	private static final String DELETE_SUCCESS_MESSAGE = "All Users deleted succesfully";
 
 	@Autowired
 	UserRepository userRepository;
@@ -33,8 +44,7 @@ public class UserService implements UserOperationInterface {
 		} catch (UserException ex) {
 			throw new UserException(ex.getMessage(), ex.getStatusCode());
 		} catch (DataIntegrityViolationException ex) {
-			throw new UserException("Mobile number should be unique for a user", ex.getCause(),
-					StatusCode.INVALID_INPUT_EXCEPTION);
+			throw new UserException(MOBILE_ERROR_MESSAGE, ex.getCause(), StatusCode.INVALID_INPUT_EXCEPTION);
 		} catch (Exception ex) {
 			throw new UserException(ex.getMessage(), ex.getCause(), StatusCode.GENERIC_EXCEPTION);
 		}
@@ -48,9 +58,9 @@ public class UserService implements UserOperationInterface {
 	@Override
 	public List<UserEntity> updateUsers(List<UserEntity> users) throws UserException {
 		try {
+			users = autoFillingValues(users);
 			checkUsersAreValid(users.stream().map(user -> user.getUserId()).collect(Collectors.toList()));
 			checkMobileNumbersValidation(users);
-			users = autoFillingValues(users);
 			checkUsersDOB(users.stream().map(user -> user.getDob()).collect(Collectors.toList()));
 			for (UserEntity user : users) {
 				userRepository.save(user);
@@ -59,8 +69,7 @@ public class UserService implements UserOperationInterface {
 		} catch (UserException ex) {
 			throw new UserException(ex.getMessage(), ex.getStatusCode());
 		} catch (DataIntegrityViolationException ex) {
-			throw new UserException("Mobile number should be unique for a user", ex.getCause(),
-					StatusCode.INVALID_INPUT_EXCEPTION);
+			throw new UserException(MOBILE_ERROR_MESSAGE, ex.getCause(), StatusCode.INVALID_INPUT_EXCEPTION);
 		} catch (Exception ex) {
 			throw new UserException(ex.getMessage(), ex.getCause(), StatusCode.GENERIC_EXCEPTION);
 		}
@@ -74,7 +83,7 @@ public class UserService implements UserOperationInterface {
 			for (Long userId : userIds) {
 				userRepository.deleteById(userId);
 			}
-			return "All Users deleted succesfully";
+			return DELETE_SUCCESS_MESSAGE;
 		} catch (UserException ex) {
 			throw new UserException(ex.getMessage(), ex.getStatusCode());
 		} catch (Exception ex) {
@@ -85,7 +94,7 @@ public class UserService implements UserOperationInterface {
 	private void checkMobileNumbersValidation(List<UserEntity> users) throws UserException {
 		long countOfInvalidNumber = users.stream().filter(user -> user.getMobileNumber().length() < 10).count();
 		if (countOfInvalidNumber > 0) {
-			throw new UserException("Invalid number in this list", StatusCode.BAD_REQUEST);
+			throw new UserException(INVALID_MOBILE_NUMBER, StatusCode.BAD_REQUEST);
 		}
 
 	}
@@ -93,7 +102,7 @@ public class UserService implements UserOperationInterface {
 	private void checkUsersAreValid(List<Long> userIds) throws UserException {
 		for (Long userId : userIds) {
 			if (!userRepository.existsById(userId)) {
-				throw new UserException("Invalid user Id in the list", StatusCode.BAD_REQUEST);
+				throw new UserException(INVALID_USER_ID, StatusCode.BAD_REQUEST);
 			}
 		}
 	}
@@ -103,8 +112,7 @@ public class UserService implements UserOperationInterface {
 		Date todayDate = cal.getTime();
 		for (Date date : dates) {
 			if (date.compareTo(todayDate) > 0) {
-				throw new UserException("Date is Invalid! And I dont beleive in time travelling.",
-						StatusCode.BAD_REQUEST);
+				throw new UserException(INVALID_DOB, StatusCode.BAD_REQUEST);
 			}
 		}
 
