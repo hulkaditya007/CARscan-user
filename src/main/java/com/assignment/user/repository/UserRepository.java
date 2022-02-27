@@ -1,6 +1,7 @@
 package com.assignment.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.assignment.user.model.UserEntity;
 
@@ -10,6 +11,7 @@ import com.assignment.user.model.UserEntity;
  * operations.
  *
  */
+@Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
 }
