@@ -1,0 +1,12 @@
+com\assignment\user\exception\UserException.class
+com\assignment\user\rest\UserController.class
+com\assignment\user\UserApplication.class
+com\assignment\user\exception\StatusCode.class
+com\assignment\user\model\UserEntity.class
+com\assignment\user\service\UserService.class
+com\assignment\user\intf\UserOperationInterface.class
+com\assignment\user\rest\ResponseDetail.class
+com\assignment\user\repository\UserRepository.class
+com\assignment\user\swagger\SwaggerConfiguration.class
+com\assignment\user\exception\ErrorDetails.class
+com\assignment\user\exception\UserExceptionHandler.class

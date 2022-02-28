@@ -1,0 +1,3 @@
+com\assignment\user\UserApplicationTests.class
+com\assignment\user\service\UserServiceTest.class
+com\assignment\user\rest\UserControllerTest.class
