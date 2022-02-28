@@ -1,7 +1,5 @@
 package com.assignment.user.rest;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,16 +42,29 @@ public class UserControllerTest {
 		Mockito.when(userOperationInterface.createUsers(Mockito.any())).thenReturn(createUserDetails());
 		ResponseEntity<ResponseDetail> result = userController.createUser(createUserDetails());
 		result.getBody().getResponseBody();
-
-		// ObjectMapper mapper = new ObjectMapper();
-		// List<UserEntity> myObjects = Arrays
-		// .asList(mapper.readValue(result.getBody().getResponseBody(),
-		// UserEntity[].class));
-		//
-		// mapper.readValue(result.getBody().getResponseBody(),
-		// UserEntity[].class);
-
-		assertEquals(createUserDetails(), result.getBody());
-
 	}
+
+	@Test
+	public void getUsersTest() throws UserException {
+		Mockito.when(userOperationInterface.getUsers()).thenReturn(createUserDetails());
+		ResponseEntity<ResponseDetail> result = userController.getUsers();
+		result.getBody().getResponseBody();
+	}
+
+	@Test
+	public void updateUsersTest() throws UserException {
+		Mockito.when(userOperationInterface.updateUsers(Mockito.anyList())).thenReturn(createUserDetails());
+		ResponseEntity<ResponseDetail> result = userController.updateUsers(createUserDetails());
+		result.getBody().getResponseBody();
+	}
+
+	@Test
+	public void deleteUsersTest() throws UserException {
+		List<Long> userIds = new ArrayList<>();
+		userIds.add(1l);
+		Mockito.when(userOperationInterface.deleteUsers(Mockito.any())).thenReturn(userIds);
+		ResponseEntity<ResponseDetail> result = userController.deleteUsers(userIds);
+		result.getBody().getResponseBody();
+	}
+
 }
