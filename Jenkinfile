@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN_HOME' // Ensure Maven is installed and configured in Jenkins
+        jdk 'JAVA_HOME' // Ensure JDK is installed and configured in Jenkins
+    }
+
+    environment {
+        SONARQUBE_SCANNER = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        SONARQUBE_URL = 'http://localhost:9000'
+        SONARQUBE_TOKEN = 'sqp_f36efd66809ff0fb67f13f6a9aaeded3af8467a0'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/hulkaditya007/CARscan-user.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                bat 'mvn clean install'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('LocalSonarQube') {
+                    bat "${SONARQUBE_SCANNER}\\bin\\sonar-scanner.bat \
+                        -Dsonar.projectKey=car-scan \
+                        -Dsonar.sources=src/main/java \
+                        -Dsonar.tests=src/test/java \
+                        -Dsonar.java.binaries=target/classes \
+                        -Dsonar.host.url=%SONARQUBE_URL% \
+                        -Dsonar.login=%SONARQUBE_TOKEN% \
+                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml"
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                script {
+                    try {
+                        snykSecurity(
+                            snykInstallation: 'snyklatest', // Ensure this matches the name of the Snyk installation in Jenkins
+                            snykTokenId: 'snyktoken'
+                            // Add any other necessary parameters here
+                        )
+                    } catch (Exception e) {
+                        echo "Snyk found vulnerabilities but the build will continue."
+                        echo "${e}"
+                    }
+                }
+            }
+        }
+        
+    }
+}
