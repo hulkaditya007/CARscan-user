@@ -9,7 +9,7 @@ pipeline {
     environment {
         SONARQUBE_SCANNER = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
         SONARQUBE_URL = 'http://localhost:9000'
-        SONARQUBE_TOKEN = 'sqp_f36efd66809ff0fb67f13f6a9aaeded3af8467a0'
+        SONARQUBE_TOKEN = 'sqp_ab7fd3c89efaa7381d7f580f9b46cbf1a983ec4b'
     }
 
     stages {
