@@ -1,4 +1,18 @@
 -------------------------------------------------------------------------------
 Test set: com.assignment.user.UserApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.198 s - in com.assignment.user.UserApplicationTests
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 14.249 s <<< FAILURE! - in com.assignment.user.UserApplicationTests
+testCreateAndGetUser  Time elapsed: 0.898 s  <<< ERROR!
+org.springframework.web.client.RestClientException: 
+Error while extracting response for type [class com.assignment.user.rest.ResponseDetail] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `com.assignment.user.exception.StatusCode` from String "Mobile number should be unique for a user": not one of the values accepted for Enum class: [INVALID_INPUT_EXCEPTION, SUCCESS, BAD_REQUEST, GENERIC_EXCEPTION]; nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Cannot deserialize value of type `com.assignment.user.exception.StatusCode` from String "Mobile number should be unique for a user": not one of the values accepted for Enum class: [INVALID_INPUT_EXCEPTION, SUCCESS, BAD_REQUEST, GENERIC_EXCEPTION]
+ at [Source: (PushbackInputStream); line: 1, column: 59] (through reference chain: com.assignment.user.rest.ResponseDetail["message"])
+	at com.assignment.user.UserApplicationTests.testCreateAndGetUser(UserApplicationTests.java:45)
+Caused by: org.springframework.http.converter.HttpMessageNotReadableException: 
+JSON parse error: Cannot deserialize value of type `com.assignment.user.exception.StatusCode` from String "Mobile number should be unique for a user": not one of the values accepted for Enum class: [INVALID_INPUT_EXCEPTION, SUCCESS, BAD_REQUEST, GENERIC_EXCEPTION]; nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Cannot deserialize value of type `com.assignment.user.exception.StatusCode` from String "Mobile number should be unique for a user": not one of the values accepted for Enum class: [INVALID_INPUT_EXCEPTION, SUCCESS, BAD_REQUEST, GENERIC_EXCEPTION]
+ at [Source: (PushbackInputStream); line: 1, column: 59] (through reference chain: com.assignment.user.rest.ResponseDetail["message"])
+	at com.assignment.user.UserApplicationTests.testCreateAndGetUser(UserApplicationTests.java:45)
+Caused by: com.fasterxml.jackson.databind.exc.InvalidFormatException: 
+Cannot deserialize value of type `com.assignment.user.exception.StatusCode` from String "Mobile number should be unique for a user": not one of the values accepted for Enum class: [INVALID_INPUT_EXCEPTION, SUCCESS, BAD_REQUEST, GENERIC_EXCEPTION]
+ at [Source: (PushbackInputStream); line: 1, column: 59] (through reference chain: com.assignment.user.rest.ResponseDetail["message"])
+	at com.assignment.user.UserApplicationTests.testCreateAndGetUser(UserApplicationTests.java:45)
+

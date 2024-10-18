@@ -1,29 +1,28 @@
 package com.assignment.user.rest;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
 import com.assignment.user.exception.UserException;
 import com.assignment.user.intf.UserOperationInterface;
 import com.assignment.user.model.UserEntity;
 
-@RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
 	@InjectMocks
 	private UserController userController = new UserController();
 
-	@Mock
-	private UserOperationInterface userOperationInterface;
+	private UserOperationInterface userOperationInterface = mock(UserOperationInterface.class);
 
 	private List<UserEntity> createUserDetails() {
 		UserEntity userEntity = new UserEntity();

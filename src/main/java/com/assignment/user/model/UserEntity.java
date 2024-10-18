@@ -73,4 +73,5 @@ public class UserEntity {
 		this.mobileNumber = mobileNumber;
 	}
 
+	
 }
